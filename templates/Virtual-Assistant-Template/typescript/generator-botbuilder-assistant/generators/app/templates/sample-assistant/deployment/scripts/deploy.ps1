@@ -27,6 +27,11 @@ if (-not $name) {
     $name = Read-Host "? Bot Name (used as default name for resource group and deployed resources)"
 }
 
+if(-not($name -match '^[a-zA-Z0-9_-]{4,42}$')){
+	Write-Host "! Bot name must be between 4 and 42 characters and can only have the following characters -, a-z, A-Z, 0-9, and _" -ForegroundColor DarkRed
+	Break
+}
+
 if (-not $resourceGroup) {
 	$resourceGroup = $name
 }
@@ -37,6 +42,11 @@ if (-not $location) {
 
 if (-not $appPassword) {
     $appPassword = Read-Host "? Password for MSA app registration (must be at least 16 characters long, contain at least 1 special character, and contain at least 1 numeric character)"
+}
+
+if(-not(($appPassword -match '^.{16,}$') -and ($appPassword -match '[!@#$%^&*(),.?:|<>\/_\-\+]{1,}') -and ($appPassword -match '[0-9]{1,}'))){
+	Write-Host "! Password for MSA app registration (must be at least 16 characters long, contain at least 1 special character (!@#$%^&*(),.?:|<>), and contain at least 1 numeric character)" -ForegroundColor DarkRed
+	Break
 }
 
 if (-not $luisAuthoringRegion) {
